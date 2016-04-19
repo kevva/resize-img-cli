@@ -20,7 +20,7 @@ $ resize-img --help
     $ cat <image> | resize-img
 
   Options
-    --width  Desired width of target image
+    --width   Desired width of target image
     --height  Desired height of target image
 
   Examples
