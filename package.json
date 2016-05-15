@@ -39,8 +39,9 @@
   },
   "devDependencies": {
     "ava": "*",
-    "execa": "^0.2.2",
+    "execa": "^0.4.0",
     "image-size": "^0.5.0",
+    "pify": "^2.3.0",
     "xo": "*"
   }
 }

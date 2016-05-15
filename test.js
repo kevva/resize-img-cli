@@ -1,9 +1,13 @@
+import fs from 'fs';
 import execa from 'execa';
 import imageSize from 'image-size';
+import pify from 'pify';
 import test from 'ava';
 
-test('resize png image', async t => {
-	const stdout = (await execa('./cli.js', ['fixture.png', '--width', '150'], {encoding: null})).stdout;
+const fsP = pify(fs);
+
+test('resize image', async t => {
+	const stdout = await execa.stdout('./cli.js', ['fixture.png', '--width', '150'], {encoding: null});
 
 	t.deepEqual(imageSize(stdout), {
 		width: 150,
@@ -12,22 +16,13 @@ test('resize png image', async t => {
 	});
 });
 
-test('resize jpg image', async t => {
-	const stdout = (await execa('./cli.js', ['fixture.jpg', '--width', '150'], {encoding: null})).stdout;
+test('resize image using stdin', async t => {
+	const buf = await fsP.readFile('fixture.png');
+	const stdout = await execa.stdout('./cli.js', ['--width', '150'], {encoding: null, input: buf});
 
 	t.deepEqual(imageSize(stdout), {
 		width: 150,
 		height: 99,
-		type: 'jpg'
-	});
-});
-
-test('resize bmp image', async t => {
-	const stdout = (await execa('./cli.js', ['fixture.bmp', '--width', '150'], {encoding: null})).stdout;
-
-	t.deepEqual(imageSize(stdout), {
-		width: 150,
-		height: 99,
-		type: 'bmp'
+		type: 'png'
 	});
 });
